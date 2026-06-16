@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="antialiased">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AIOS CRM × EF Harmony · Proposta de Parceria Comercial</title>
+<meta name="description" content="Como a EF Harmony transforma atendimento, retorno de pacientes e faturamento em um sistema vivo, automatizado e inteligente com o AIOS CRM.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    fontFamily: { sans: ['Outfit','sans-serif'], serif: ['Cormorant Garamond','serif'] },
+    colors: {
+      brand: { base:'#03080A', teal:'#0E4A57', darkTeal:'#052229', ivory:'#F9FAF9', muted:'#8A9D9E' },
+      ai: { magenta:'#F92A82', blue:'#0066FF', emerald:'#00F098', violet:'#9D00FF' }
+    },
+    backgroundImage: {
+      'iridescent-flow':'linear-gradient(110deg,#F92A82,#9D00FF,#0066FF,#00F098,#F92A82)',
+      'teal-abyss':'radial-gradient(circle at 62% 38%, #0E4A57 0%, #052229 42%, #03080A 100%)',
+    },
+    boxShadow: {
+      'glow-iridescent':'0 0 40px -10px rgba(0,102,255,0.4), 0 0 80px -20px rgba(249,42,130,0.3)',
+    }
+  } }
+}
+</script>
+<style>
+  :root{ --curve:cubic-bezier(0.16,1,0.3,1); }
+  *{ scrollbar-width:none; }
+  *::-webkit-scrollbar{ display:none; }
+  html,body{ height:100%; margin:0; overflow:hidden; background:#03080A; color:#F9FAF9; }
+  body{ font-family:'Outfit',sans-serif; }
+
+  /* film grain */
+  .film-grain{ position:fixed; inset:0; pointer-events:none; z-index:60; opacity:.30; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* ambient orbs (single fixed bg) */
+  .bg-stage{ position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+  .ambient-orb{ position:absolute; border-radius:50%; filter:blur(150px); opacity:.5; mix-blend-mode:screen; animation:float-orb 22s infinite ease-in-out alternate; will-change:transform; }
+  @keyframes float-orb{ 0%{transform:translate(0,0) scale(1);} 50%{transform:translate(-40px,50px) scale(1.12);} 100%{transform:translate(30px,-25px) scale(.95);} }
+  .animate-gradient-flow{ background-size:300% 300%; animation:gradient-shift 12s ease infinite; }
+  @keyframes gradient-shift{ 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }
+  @keyframes spin-slow{ to{ transform:rotate(360deg);} }
+  .spin-slow{ animation:spin-slow 48s linear infinite; }
+  @keyframes pulse-soft{ 0%,100%{opacity:.5;} 50%{opacity:1;} }
+  .pulse-soft{ animation:pulse-soft 3s ease-in-out infinite; }
+
+  /* glass */
+  .glass{ background:rgba(255,255,255,0.025); backdrop-filter:blur(20px) saturate(140%); -webkit-backdrop-filter:blur(20px) saturate(140%); border:1px solid rgba(255,255,255,0.08); }
+  .glass-soft{ background:rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.06); }
+  .hairline{ background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent); }
+
+  /* deck + slides */
+  #deck{ position:fixed; inset:0; display:flex; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; scroll-behavior:smooth; z-index:10; }
+  .slide{ position:relative; flex:0 0 100vw; width:100vw; height:100dvh; scroll-snap-align:start; scroll-snap-stop:always;
+    display:flex; flex-direction:column; justify-content:center; padding:5.5rem clamp(1.25rem,5vw,5.5rem) 5rem; }
+  .slide-inner{ width:100%; max-width:80rem; margin:0 auto; }
+
+  /* reveal */
+  .slide [data-reveal]{ opacity:0; transform:translateY(30px); filter:blur(6px);
+    transition:opacity .9s var(--curve), transform .9s var(--curve), filter .9s var(--curve);
+    transition-delay:calc(var(--d,0)*85ms); }
+  .slide.is-active [data-reveal]{ opacity:1; transform:none; filter:none; }
+
+  .kicker{ font-size:.7rem; letter-spacing:.28em; text-transform:uppercase; font-weight:600; }
+  .text-editorial{ letter-spacing:-.02em; }
+  .grad-text{ background:linear-gradient(110deg,#F92A82,#9D00FF,#0066FF,#00F098); -webkit-background-clip:text; background-clip:text; color:transparent; background-size:200% 200%; animation:gradient-shift 10s ease infinite; }
+  ::selection{ background:rgba(249,42,130,.3); color:#fff; }
+  .num-serif{ font-family:'Cormorant Garamond',serif; }
+
+  /* mobile gate: deck is desktop-only */
+  #mobile-gate{ display:none; }
+  @media (max-width:820px), (max-height:520px){
+    #deck, header, nav, #progressbar{ display:none !important; }
+    #mobile-gate{ display:flex !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="film-grain"></div>
+
+<!-- ambient background -->
+<div class="bg-stage bg-teal-abyss">
+  <div class="absolute w-[80vw] h-[80vw] rounded-full blur-[160px]" style="background:rgba(14,74,87,.28); top:-40vw; left:-22vw;"></div>
+  <div class="ambient-orb w-[48vw] h-[48vw]" style="background:rgba(0,102,255,.40); top:6%; right:-12vw; animation-delay:-5s;"></div>
+  <div class="ambient-orb w-[40vw] h-[40vw]" style="background:rgba(249,42,130,.30); bottom:-14vw; right:8vw; animation-delay:-12s;"></div>
+  <div class="ambient-orb w-[30vw] h-[30vw]" style="background:rgba(0,240,152,.22); top:42%; left:14vw; animation-delay:-8s;"></div>
+</div>
+
+<!-- progress bar -->
+<div id="progressbar" class="fixed top-0 left-0 right-0 h-[3px] z-50 bg-white/5">
+  <div id="progress" class="h-full bg-iridescent-flow animate-gradient-flow" style="width:6.25%;"></div>
+</div>
+
+<!-- fixed header -->
+<header class="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-5 md:px-10 h-16 pointer-events-none">
+  <div class="flex items-center gap-3">
+    <img src="assets/logos/ef-harmony-logo.png" alt="EF Harmony" class="h-8 w-8 rounded-md object-cover ring-1 ring-white/10">
+    <span class="font-serif tracking-[0.16em] text-xs md:text-sm uppercase text-brand-ivory/90 font-medium hidden sm:inline">EF Harmony</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <span class="font-sans tracking-[0.22em] text-[10px] md:text-[11px] uppercase text-brand-ivory/70 font-semibold hidden sm:inline">AIOS<span class="text-white"> CRM</span></span>
+    <img src="assets/logos/aios-logo.png" alt="AIOS CRM" class="h-9 w-9 object-contain">
+  </div>
+</header>
+
+<!-- fixed bottom nav -->
+<nav class="fixed bottom-0 left-0 right-0 z-40 flex items-center justify-between px-5 md:px-10 h-16">
+  <span id="sectionLabel" class="kicker text-brand-ivory/45 hidden md:inline">Parceria Comercial</span>
+  <div class="flex items-center gap-5 mx-auto md:mx-0">
+    <button id="prevBtn" aria-label="Anterior" class="w-10 h-10 rounded-full glass flex items-center justify-center text-brand-ivory/80 hover:text-white hover:border-white/25 transition active:scale-90"><i class="ph ph-arrow-left text-lg"></i></button>
+    <div class="num-serif text-xl text-brand-ivory font-light"><span id="cur">01</span><span class="text-brand-ivory/30 text-base font-sans"> / 16</span></div>
+    <button id="nextBtn" aria-label="Próximo" class="w-10 h-10 rounded-full glass flex items-center justify-center text-brand-ivory/80 hover:text-white hover:border-white/25 transition active:scale-90"><i class="ph ph-arrow-right text-lg"></i></button>
+  </div>
+  <span class="font-sans text-[10px] tracking-[0.18em] uppercase text-brand-ivory/35 hidden md:inline">AIOS × EF Harmony</span>
+</nav>
+
+<!-- mobile gate -->
+<div id="mobile-gate" class="fixed inset-0 z-[100] flex-col items-center justify-center text-center px-8">
+  <div class="flex items-center gap-4 mb-10">
+    <img src="assets/logos/ef-harmony-logo.png" alt="EF Harmony" class="h-12 rounded-lg ring-1 ring-white/10">
+    <span class="font-serif italic text-2xl text-brand-ivory/40">×</span>
+    <img src="assets/logos/aios-logo.png" alt="AIOS CRM" class="h-12 object-contain">
+  </div>
+  <div class="w-14 h-14 rounded-full glass flex items-center justify-center mb-7"><i class="ph ph-desktop text-2xl grad-text"></i></div>
+  <h1 class="font-serif text-4xl text-brand-ivory mb-4 leading-[1.05]">Para uma melhor<br><span class="italic grad-text">experiência</span></h1>
+  <p class="text-brand-muted font-light max-w-xs leading-relaxed">Esta apresentação foi desenhada para telas maiores. Abra no <span class="text-brand-ivory">computador</span> para vê-la com toda a qualidade que ela merece.</p>
+  <span class="kicker text-brand-ivory/30 mt-12">AIOS CRM × EF Harmony</span>
+</div>
+
+<div id="deck">
+
+  <!-- ============ SLIDE 01 · CAPA ============ -->
+  <section class="slide is-active" data-section="Parceria Comercial">
+    <div class="slide-inner grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-8">
+        <div class="flex items-center gap-4 mb-8" data-reveal style="--d:1"><span class="w-12 h-px bg-ai-magenta/70"></span><span class="kicker text-brand-ivory/60">Proposta de Parceria Comercial</span></div>
+        <h1 class="font-serif text-editorial font-medium leading-[0.92] text-5xl md:text-7xl lg:text-[6.5rem] mb-8">
+          <span class="block text-brand-ivory" data-reveal style="--d:2">Precisão da Natureza.</span>
+          <span class="block italic text-brand-ivory/45 pl-10 md:pl-24" data-reveal style="--d:3">Poder da Inteligência.</span>
+        </h1>
+        <p class="font-light text-lg md:text-xl text-brand-muted max-w-xl leading-relaxed md:pl-24" data-reveal style="--d:4">
+          Como a <span class="text-brand-ivory">EF Harmony</span> transforma atendimento, retorno de pacientes e faturamento em um sistema vivo, automatizado e inteligente.
+        </p>
+        <div class="mt-10 md:pl-24 flex items-center gap-5" data-reveal style="--d:5">
+          <div class="rounded-full p-px bg-iridescent-flow animate-gradient-flow shadow-glow-iridescent">
+            <div class="bg-brand-base/90 px-7 py-3.5 rounded-full flex items-center gap-3"><span class="text-xs tracking-[0.2em] font-semibold uppercase text-white">Apresentação</span><i class="ph ph-arrow-right text-white"></i></div>
+          </div>
+          <span class="text-xs tracking-[0.18em] uppercase text-brand-ivory/40">Use as setas → para navegar</span>
+        </div>
+      </div>
+      <div class="lg:col-span-4 hidden lg:flex flex-col items-center justify-center gap-6" data-reveal style="--d:6">
+        <div class="glass rounded-[2rem] p-8 w-full flex flex-col items-center gap-7">
+          <img src="assets/logos/ef-harmony-logo.png" alt="EF Harmony" class="w-40 rounded-xl ring-1 ring-white/10">
+          <div class="flex items-center gap-3 text-brand-ivory/40"><span class="w-10 h-px bg-white/15"></span><span class="font-serif italic text-xl">×</span><span class="w-10 h-px bg-white/15"></span></div>
+          <img src="assets/logos/aios-logo.png" alt="AIOS CRM" class="w-28">
+          <span class="text-[10px] tracking-[0.25em] uppercase text-brand-ivory/40">Junho · 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 02 · MANIFESTO ============ -->
+  <section class="slide" data-section="Quem Somos">
+    <div class="slide-inner">
+      <div class="flex items-center gap-4 mb-8" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-emerald/70"></span><span class="kicker text-brand-ivory/60">Quem somos</span></div>
+      <h2 class="font-serif text-editorial leading-[0.95] text-4xl md:text-6xl lg:text-7xl max-w-5xl mb-10">
+        <span data-reveal style="--d:1" class="text-brand-ivory/50">O AIOS não é um CRM.</span><br>
+        <span data-reveal style="--d:2" class="text-brand-ivory">É um <span class="grad-text italic">parceiro comercial</span>.</span>
+      </h2>
+      <p class="font-light text-lg md:text-xl text-brand-muted max-w-2xl leading-relaxed mb-12" data-reveal style="--d:3">
+        Não entregamos um software e desaparecemos. Entramos como sócios do crescimento da sua clínica: estruturamos o seu processo comercial, automatizamos com inteligência artificial e acompanhamos cada resultado, lado a lado.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="glass rounded-2xl p-7" data-reveal style="--d:4"><i class="ph ph-strategy text-3xl grad-text"></i><h3 class="font-serif text-2xl mt-4 mb-2 text-brand-ivory">Estratégia</h3><p class="text-sm text-brand-muted font-light">Desenhamos o funil e o processo comercial antes de qualquer automação.</p></div>
+        <div class="glass rounded-2xl p-7" data-reveal style="--d:5"><i class="ph ph-cpu text-3xl grad-text"></i><h3 class="font-serif text-2xl mt-4 mb-2 text-brand-ivory">Tecnologia</h3><p class="text-sm text-brand-muted font-light">IA e automações que trabalham 24h pela sua clínica, no tom da EF Harmony.</p></div>
+        <div class="glass rounded-2xl p-7" data-reveal style="--d:6"><i class="ph ph-handshake text-3xl grad-text"></i><h3 class="font-serif text-2xl mt-4 mb-2 text-brand-ivory">Acompanhamento</h3><p class="text-sm text-brand-muted font-light">Suporte dedicado e evolução contínua, com você a cada passo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 03 · O CENÁRIO ============ -->
+  <section class="slide" data-section="O Cenário">
+    <div class="slide-inner grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-7">
+        <div class="flex items-center gap-4 mb-8" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-magenta/70"></span><span class="kicker text-brand-ivory/60">O cenário</span></div>
+        <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-5xl lg:text-6xl text-brand-ivory mb-8" data-reveal style="--d:1">
+          Cada paciente que não volta é faturamento que <span class="italic text-brand-ivory/45">evapora — em silêncio.</span>
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 mt-8">
+          <div class="flex gap-3" data-reveal style="--d:2"><span class="num-serif text-ai-magenta/80 text-xl leading-none">01</span><p class="text-sm text-brand-muted font-light">Leads do Instagram que chegam e nunca mais respondem.</p></div>
+          <div class="flex gap-3" data-reveal style="--d:3"><span class="num-serif text-ai-magenta/80 text-xl leading-none">02</span><p class="text-sm text-brand-muted font-light">Pacientes que fizeram um protocolo e simplesmente sumiram.</p></div>
+          <div class="flex gap-3" data-reveal style="--d:4"><span class="num-serif text-ai-magenta/80 text-xl leading-none">03</span><p class="text-sm text-brand-muted font-light">Equipe no WhatsApp pessoal, sem histórico e sem padrão.</p></div>
+          <div class="flex gap-3" data-reveal style="--d:5"><span class="num-serif text-ai-magenta/80 text-xl leading-none">04</span><p class="text-sm text-brand-muted font-light">Agendamentos esquecidos por falta de confirmação.</p></div>
+          <div class="flex gap-3" data-reveal style="--d:6"><span class="num-serif text-ai-magenta/80 text-xl leading-none">05</span><p class="text-sm text-brand-muted font-light">Tráfego pago rodando sem saber o real retorno.</p></div>
+          <div class="flex gap-3" data-reveal style="--d:7"><span class="num-serif text-ai-magenta/80 text-xl leading-none">06</span><p class="text-sm text-brand-muted font-light">Recompra de procedimentos deixada ao acaso.</p></div>
+        </div>
+      </div>
+      <div class="lg:col-span-5 hidden lg:block" data-reveal style="--d:3">
+        <div class="relative glass rounded-[2rem] overflow-hidden aspect-[4/5] p-9 flex flex-col justify-between">
+          <div class="absolute -top-10 -right-10 w-48 h-48 rounded-full bg-iridescent-flow animate-gradient-flow opacity-20 blur-3xl"></div>
+          <div class="relative flex items-center justify-between">
+            <i class="ph ph-users-three text-4xl grad-text"></i>
+            <span class="kicker text-brand-ivory/40">@ef_harmony</span>
+          </div>
+          <div class="relative">
+            <p class="font-serif italic text-3xl md:text-4xl text-brand-ivory leading-[1.1] mb-5">"Você atrai.<br>Mas está retendo?"</p>
+            <div class="flex items-center gap-5 pt-5 border-t border-white/8">
+              <div><div class="num-serif text-3xl text-brand-ivory">7.331</div><div class="text-[11px] text-brand-muted tracking-wide">seguidores</div></div>
+              <div><div class="num-serif text-3xl text-brand-ivory">618</div><div class="text-[11px] text-brand-muted tracking-wide">publicações</div></div>
+            </div>
+            <p class="text-xs text-brand-muted mt-4 leading-relaxed">Uma audiência que precisa virar <span class="text-brand-ivory/80">agenda cheia</span>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 04 · METODOLOGIA ============ -->
+  <section class="slide" data-section="Nosso Método">
+    <div class="slide-inner">
+      <div class="flex items-center gap-4 mb-7" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-blue/70"></span><span class="kicker text-brand-ivory/60">Nosso método</span></div>
+      <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-4" data-reveal style="--d:1">Antes de automatizar, nós <span class="italic grad-text">estruturamos.</span></h2>
+      <p class="text-brand-muted font-light max-w-2xl mb-12 text-lg" data-reveal style="--d:2">Automação sem processo é só caos mais rápido. Por isso seguimos duas fases — sempre nessa ordem.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass rounded-2xl p-8 relative overflow-hidden" data-reveal style="--d:3">
+          <span class="num-serif text-[7rem] leading-none text-white/5 absolute -top-4 right-3">1</span>
+          <span class="kicker text-ai-emerald/80">Fase 01</span>
+          <h3 class="font-serif text-3xl text-brand-ivory mt-3 mb-4">Estruturação do Processo Comercial</h3>
+          <ul class="space-y-2 text-sm text-brand-muted font-light">
+            <li class="flex gap-2"><i class="ph ph-check text-ai-emerald"></i> Mapeamento do funil e das etapas da jornada</li>
+            <li class="flex gap-2"><i class="ph ph-check text-ai-emerald"></i> Etiquetas, ofertas e gatilhos de recompra</li>
+            <li class="flex gap-2"><i class="ph ph-check text-ai-emerald"></i> Scripts e tom de voz da EF Harmony</li>
+          </ul>
+        </div>
+        <div class="glass rounded-2xl p-8 relative overflow-hidden" data-reveal style="--d:4">
+          <span class="num-serif text-[7rem] leading-none text-white/5 absolute -top-4 right-3">2</span>
+          <span class="kicker text-ai-magenta/80">Fase 02</span>
+          <h3 class="font-serif text-3xl text-brand-ivory mt-3 mb-4">Automatização</h3>
+          <ul class="space-y-2 text-sm text-brand-muted font-light">
+            <li class="flex gap-2"><i class="ph ph-check text-ai-magenta"></i> Agentes de IA de atendimento e organização</li>
+            <li class="flex gap-2"><i class="ph ph-check text-ai-magenta"></i> Automações do painel (Kanban, sequências)</li>
+            <li class="flex gap-2"><i class="ph ph-check text-ai-magenta"></i> Integração total com o Clinicorp</li>
+          </ul>
+        </div>
+      </div>
+      <p class="mt-8 text-center font-serif italic text-xl text-brand-ivory/70" data-reveal style="--d:5">Primeiro desenhamos a operação. Depois colocamos no piloto automático.</p>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 05 · IA ATENDIMENTO ============ -->
+  <section class="slide" data-section="IA de Atendimento">
+    <div class="slide-inner grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-7">
+        <div class="flex items-center gap-4 mb-7" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-violet/70"></span><span class="kicker text-brand-ivory/60">Inteligência Artificial · 01</span></div>
+        <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-6" data-reveal style="--d:1">Um agente de IA que atende como a sua melhor recepcionista — <span class="italic grad-text">24h por dia.</span></h2>
+        <p class="text-brand-muted font-light max-w-xl text-lg leading-relaxed mb-8" data-reveal style="--d:2">Acolhe a paciente, esclarece dúvidas sobre os protocolos, qualifica e agenda — sempre no tom sofisticado e discreto da EF Harmony. Nenhum lead do Instagram fica sem resposta.</p>
+        <div class="flex flex-wrap gap-4">
+          <div class="glass-soft rounded-xl px-5 py-4" data-reveal style="--d:3"><div class="num-serif text-3xl grad-text">&lt;3min</div><div class="text-xs text-brand-muted tracking-wide mt-1">Tempo de resposta</div></div>
+          <div class="glass-soft rounded-xl px-5 py-4" data-reveal style="--d:4"><div class="num-serif text-3xl grad-text">24/7</div><div class="text-xs text-brand-muted tracking-wide mt-1">Sempre disponível</div></div>
+          <div class="glass-soft rounded-xl px-5 py-4" data-reveal style="--d:5"><div class="num-serif text-3xl grad-text">100%</div><div class="text-xs text-brand-muted tracking-wide mt-1">No tom da sua marca</div></div>
+        </div>
+      </div>
+      <div class="lg:col-span-5" data-reveal style="--d:4">
+        <div class="glass rounded-[1.75rem] p-5 space-y-3">
+          <div class="flex items-center gap-3 pb-3 border-b border-white/5"><div class="w-9 h-9 rounded-full bg-iridescent-flow animate-gradient-flow flex items-center justify-center"><i class="ph ph-sparkle text-white text-sm"></i></div><div><div class="text-sm text-brand-ivory font-medium">Sophia · IA EF Harmony</div><div class="text-[10px] text-ai-emerald tracking-wide">online agora</div></div></div>
+          <div class="bg-white/5 rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm text-brand-ivory/90 max-w-[85%]">Oi! Vi que você se interessou pela harmonização facial 💎 Posso te explicar como funciona o Protocolo EF Beauty?</div>
+          <div class="bg-iridescent-flow/10 ml-auto rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm text-brand-ivory/90 max-w-[85%]" style="background:rgba(0,102,255,.14)">Sim! Queria entender o resultado natural.</div>
+          <div class="bg-white/5 rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm text-brand-ivory/90 max-w-[90%]">Perfeito. Tenho um horário com o Dr. Eduardo quinta às 14h — quer que eu já reserve para você? 🗓️</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 06 · IA ORGANIZAÇÃO ============ -->
+  <section class="slide" data-section="IA de Organização">
+    <div class="slide-inner grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 order-2 lg:order-1" data-reveal style="--d:3">
+        <div class="glass rounded-[1.75rem] p-7 space-y-4">
+          <div class="flex items-center justify-between"><span class="kicker text-brand-ivory/50">Bastidores · Operação</span><i class="ph ph-circle-notch text-ai-emerald spin-slow"></i></div>
+          <div class="flex items-center gap-3 text-sm text-brand-ivory/80"><i class="ph ph-check-circle text-ai-emerald text-lg"></i> Card movido para "Pós-procedimento"</div>
+          <div class="flex items-center gap-3 text-sm text-brand-ivory/80"><i class="ph ph-tag text-ai-blue text-lg"></i> Paciente categorizada: <span class="text-brand-ivory">Botox Premium</span></div>
+          <div class="flex items-center gap-3 text-sm text-brand-ivory/80"><i class="ph ph-bell-ringing text-ai-magenta text-lg"></i> Pendência identificada: retorno em 21 dias</div>
+          <div class="flex items-center gap-3 text-sm text-brand-ivory/80"><i class="ph ph-broom text-ai-violet text-lg"></i> Conversa sem resposta há 2 dias → sinalizada</div>
+        </div>
+      </div>
+      <div class="lg:col-span-7 order-1 lg:order-2">
+        <div class="flex items-center gap-4 mb-7" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-emerald/70"></span><span class="kicker text-brand-ivory/60">Inteligência Artificial · 02</span></div>
+        <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-6" data-reveal style="--d:1">Um segundo agente que mantém a operação organizada — <span class="italic grad-text">por dentro.</span></h2>
+        <p class="text-brand-muted font-light max-w-xl text-lg leading-relaxed" data-reveal style="--d:2">Enquanto o primeiro agente conversa, o segundo organiza o sistema via suporte: monitora conversas, atualiza cards, categoriza pacientes, identifica pendências e garante que nada caia no esquecimento. É o cérebro operacional silencioso da sua clínica.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 07 · SUGESTÕES + APROVAÇÕES ============ -->
+  <section class="slide" data-section="IA com Controle">
+    <div class="slide-inner">
+      <div class="flex items-center gap-4 mb-7" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-blue/70"></span><span class="kicker text-brand-ivory/60">IA com controle</span></div>
+      <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-6 max-w-4xl" data-reveal style="--d:1">A IA sugere. <span class="italic text-brand-ivory/45">Você aprova.</span> Nada sai sem o seu aval.</h2>
+      <p class="text-brand-muted font-light max-w-2xl text-lg mb-12" data-reveal style="--d:2">A inteligência analisa cada paciente e propõe a próxima ação certa. Você decide com um toque — inteligência com controle total nas suas mãos.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="glass rounded-2xl p-6" data-reveal style="--d:3">
+          <span class="kicker text-ai-magenta/80">Sugestão da IA</span>
+          <p class="text-brand-ivory mt-3 mb-5 font-light">"Ana fez preenchimento há 6 meses. Sugiro oferecer manutenção com 10% de cortesia."</p>
+          <div class="flex gap-2"><button class="flex-1 rounded-full bg-iridescent-flow animate-gradient-flow text-white text-xs font-semibold py-2.5 tracking-wide">Aprovar</button><button class="rounded-full glass-soft text-brand-ivory/60 text-xs px-4">Editar</button></div>
+        </div>
+        <div class="glass rounded-2xl p-6" data-reveal style="--d:4">
+          <span class="kicker text-ai-emerald/80">Sugestão da IA</span>
+          <p class="text-brand-ivory mt-3 mb-5 font-light">"15 leads frios do tráfego desta semana. Sugiro campanha de reativação no sábado."</p>
+          <div class="flex gap-2"><button class="flex-1 rounded-full bg-iridescent-flow animate-gradient-flow text-white text-xs font-semibold py-2.5 tracking-wide">Aprovar</button><button class="rounded-full glass-soft text-brand-ivory/60 text-xs px-4">Editar</button></div>
+        </div>
+        <div class="glass rounded-2xl p-6" data-reveal style="--d:5">
+          <span class="kicker text-ai-violet/80">Sugestão da IA</span>
+          <p class="text-brand-ivory mt-3 mb-5 font-light">"Paciente VIP sem agendamento há 90 dias. Sugiro contato pessoal do Dr. Eduardo."</p>
+          <div class="flex gap-2"><button class="flex-1 rounded-full bg-iridescent-flow animate-gradient-flow text-white text-xs font-semibold py-2.5 tracking-wide">Aprovar</button><button class="rounded-full glass-soft text-brand-ivory/60 text-xs px-4">Editar</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 08 · KANBAN ============ -->
+  <section class="slide" data-section="Painel Kanban">
+    <div class="slide-inner">
+      <div class="flex items-center gap-4 mb-6" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-emerald/70"></span><span class="kicker text-brand-ivory/60">Automação · Kanban</span></div>
+      <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-3 max-w-4xl" data-reveal style="--d:1">Mover um card dispara uma ação. <span class="italic grad-text">Sem esforço.</span></h2>
+      <p class="text-brand-muted font-light max-w-2xl text-lg mb-10" data-reveal style="--d:2">Ao arrastar a paciente de etapa, o AIOS automaticamente envia mensagens e a insere em sequências. Arrastar = automatizar.</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass-soft rounded-xl p-3" data-reveal style="--d:3"><div class="kicker text-brand-ivory/50 mb-3 flex justify-between">Novo lead <span class="text-ai-blue">3</span></div><div class="bg-white/5 rounded-lg p-3 mb-2 text-xs text-brand-ivory/80">Marina · Instagram</div><div class="bg-white/5 rounded-lg p-3 text-xs text-brand-ivory/80">Júlia · Tráfego</div></div>
+        <div class="glass-soft rounded-xl p-3" data-reveal style="--d:4"><div class="kicker text-brand-ivory/50 mb-3 flex justify-between">Agendada <span class="text-ai-emerald">2</span></div><div class="bg-white/5 rounded-lg p-3 text-xs text-brand-ivory/80">Camila · qui 14h</div></div>
+        <div class="rounded-xl p-3 relative ring-1 ring-ai-magenta/40" data-reveal style="--d:5; background:rgba(249,42,130,.06)"><div class="kicker text-ai-magenta mb-3 flex justify-between">Pós-procedimento <span>1</span></div><div class="bg-white/10 rounded-lg p-3 text-xs text-brand-ivory shadow-glow-iridescent">Ana → movida ✦</div><div class="mt-3 text-[10px] text-ai-emerald flex items-center gap-1"><i class="ph ph-paper-plane-tilt"></i> Mensagem enviada</div><div class="text-[10px] text-ai-blue flex items-center gap-1"><i class="ph ph-flow-arrow"></i> +Sequência de recompra</div></div>
+        <div class="glass-soft rounded-xl p-3" data-reveal style="--d:6"><div class="kicker text-brand-ivory/50 mb-3 flex justify-between">Recompra <span class="text-ai-violet">4</span></div><div class="bg-white/5 rounded-lg p-3 text-xs text-brand-ivory/80">Fernanda · ativa</div></div>
+      </div>
+      <p class="mt-8 font-serif italic text-lg text-brand-ivory/60 text-center" data-reveal style="--d:7">A jornada inteira da paciente, visual e viva — trabalhando enquanto você atende.</p>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 09 · CAMPANHAS ============ -->
+  <section class="slide" data-section="Campanhas Segmentadas">
+    <div class="slide-inner grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-7">
+        <div class="flex items-center gap-4 mb-7" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-magenta/70"></span><span class="kicker text-brand-ivory/60">Automação · Campanhas</span></div>
+        <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-6" data-reveal style="--d:1">Mensagens certas, para as pacientes certas, <span class="italic grad-text">no momento certo.</span></h2>
+        <p class="text-brand-muted font-light max-w-xl text-lg leading-relaxed" data-reveal style="--d:2">Campanhas de disparo segmentadas por procedimento, perfil e etapa do funil — via API oficial do WhatsApp. Reative inativas, ofereça recompra e comunique novidades com precisão cirúrgica.</p>
+      </div>
+      <div class="lg:col-span-5 space-y-3">
+        <div class="glass rounded-xl p-4 flex items-center justify-between" data-reveal style="--d:3"><div><div class="text-sm text-brand-ivory">Inativas · Harmonização</div><div class="text-xs text-brand-muted">128 pacientes</div></div><span class="text-xs text-ai-emerald flex items-center gap-1"><i class="ph ph-paper-plane-tilt"></i> Enviada</span></div>
+        <div class="glass rounded-xl p-4 flex items-center justify-between" data-reveal style="--d:4"><div><div class="text-sm text-brand-ivory">Recompra · Botox (90 dias)</div><div class="text-xs text-brand-muted">64 pacientes</div></div><span class="text-xs text-ai-blue flex items-center gap-1"><i class="ph ph-clock"></i> Agendada</span></div>
+        <div class="glass rounded-xl p-4 flex items-center justify-between" data-reveal style="--d:5"><div><div class="text-sm text-brand-ivory">VIP · Lançamento laser CO2</div><div class="text-xs text-brand-muted">37 pacientes</div></div><span class="text-xs text-ai-magenta flex items-center gap-1"><i class="ph ph-star"></i> Segmentada</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 10 · AGENDA + LEMBRETES ============ -->
+  <section class="slide" data-section="Agenda & Lembretes">
+    <div class="slide-inner grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 order-2 lg:order-1 space-y-3" data-reveal style="--d:3">
+        <div class="glass rounded-xl p-4 flex items-center gap-4"><i class="ph ph-calendar-check text-2xl text-ai-emerald"></i><div><div class="text-sm text-brand-ivory">Hoje · 14:00 — Camila</div><div class="text-xs text-brand-muted">Harmonização · confirmada ✓</div></div></div>
+        <div class="glass rounded-xl p-4 flex items-center gap-4"><i class="ph ph-bell-ringing text-2xl text-ai-blue"></i><div><div class="text-sm text-brand-ivory">Lembrete enviado</div><div class="text-xs text-brand-muted">"Sua sessão é amanhã às 14h 💎"</div></div></div>
+        <div class="glass rounded-xl p-4 flex items-center gap-4"><i class="ph ph-arrows-clockwise text-2xl text-ai-magenta"></i><div><div class="text-sm text-brand-ivory">Retorno em 21 dias</div><div class="text-xs text-brand-muted">agendado automaticamente</div></div></div>
+      </div>
+      <div class="lg:col-span-7 order-1 lg:order-2">
+        <div class="flex items-center gap-4 mb-7" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-blue/70"></span><span class="kicker text-brand-ivory/60">Gestão · Agenda</span></div>
+        <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-6" data-reveal style="--d:1">Agenda cheia, faltas reduzidas — <span class="italic grad-text">no automático.</span></h2>
+        <p class="text-brand-muted font-light max-w-xl text-lg leading-relaxed" data-reveal style="--d:2">Agenda de pacientes integrada com lembretes de agendamento via CRM e mensagens. Confirmações automáticas significam menos no-show e mais cadeira ocupada — sem a equipe lembrar uma a uma.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 11 · INTEGRAÇÃO CLINICORP (CENTERPIECE) ============ -->
+  <section class="slide" data-section="Integração Clinicorp">
+    <div class="slide-inner">
+      <div class="flex items-center gap-4 mb-6" data-reveal style="--d:0"><span class="w-12 h-px bg-iridescent-flow animate-gradient-flow"></span><span class="kicker grad-text">Integração · Clinicorp</span></div>
+      <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-3 max-w-5xl" data-reveal style="--d:1">Seu Clinicorp e o AIOS, falando a <span class="italic grad-text">mesma língua.</span> Em tempo real.</h2>
+      <p class="text-brand-muted font-light max-w-3xl text-lg mb-10" data-reveal style="--d:2">Você não troca de sistema — o AIOS abraça o que a EF Harmony já usa hoje. Toda ação no Clinicorp reflete instantaneamente no AIOS:</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+        <div class="glass rounded-2xl p-6 relative" data-reveal style="--d:3">
+          <div class="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center mb-4"><i class="ph ph-calendar-plus text-2xl text-ai-blue"></i></div>
+          <span class="kicker text-ai-blue/80">Passo 01 · No Clinicorp</span>
+          <p class="text-brand-ivory mt-2 font-light">Uma <span class="text-brand-ivory font-medium">agenda é criada</span> no Clinicorp → <span class="text-brand-ivory">ativa os lembretes de agendamento</span> dentro do AIOS.</p>
+          <i class="ph ph-arrow-right text-white/20 text-2xl absolute -right-3 top-1/2 hidden md:block"></i>
+        </div>
+        <div class="glass rounded-2xl p-6 relative" data-reveal style="--d:4">
+          <div class="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center mb-4"><i class="ph ph-flow-arrow text-2xl text-ai-emerald"></i></div>
+          <span class="kicker text-ai-emerald/80">Passo 02 · Atendimento concluído</span>
+          <p class="text-brand-ivory mt-2 font-light">Ao <span class="text-brand-ivory font-medium">finalizar o agendamento</span>, a paciente entra sozinha em uma <span class="text-brand-ivory">sequência de recompra</span> de procedimento.</p>
+          <i class="ph ph-arrow-right text-white/20 text-2xl absolute -right-3 top-1/2 hidden md:block"></i>
+        </div>
+        <div class="glass rounded-2xl p-6" data-reveal style="--d:5">
+          <div class="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center mb-4"><i class="ph ph-kanban text-2xl text-ai-magenta"></i></div>
+          <span class="kicker text-ai-magenta/80">Passo 03 · Ao mesmo tempo</span>
+          <p class="text-brand-ivory mt-2 font-light">O <span class="text-brand-ivory font-medium">card se move sozinho</span> no painel Kanban, refletindo a nova etapa da jornada.</p>
+        </div>
+      </div>
+      <div class="mt-8 glass rounded-2xl p-6 flex flex-col md:flex-row items-center gap-5 justify-center text-center md:text-left" data-reveal style="--d:6">
+        <div class="flex items-center gap-3 shrink-0">
+          <span class="font-serif text-2xl text-brand-ivory">Clinicorp</span>
+          <i class="ph ph-arrows-left-right text-2xl grad-text"></i>
+          <span class="font-serif text-2xl grad-text">AIOS</span>
+        </div>
+        <p class="font-serif italic text-xl text-brand-ivory/80">Sua operação deixa de ser dois sistemas. Vira um organismo único.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 12 · RELATÓRIOS + ROI ============ -->
+  <section class="slide" data-section="Dados & ROI">
+    <div class="slide-inner">
+      <div class="flex items-center gap-4 mb-6" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-emerald/70"></span><span class="kicker text-brand-ivory/60">Integração · Dados & ROI</span></div>
+      <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-4 max-w-4xl" data-reveal style="--d:1">Cada real de venda no Clinicorp vira <span class="italic grad-text">inteligência no AIOS.</span></h2>
+      <p class="text-brand-muted font-light max-w-3xl text-lg mb-12" data-reveal style="--d:2">A agenda e os valores lançados no Clinicorp refletem no AIOS. Com isso, você tem relatórios de vendas reais, calcula o ROI de cada campanha e anúncio, e mede todas as etapas do funil. Decisão por dado — não por achismo.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="glass rounded-2xl p-7" data-reveal style="--d:3"><i class="ph ph-chart-line-up text-3xl grad-text"></i><h3 class="font-serif text-2xl mt-4 mb-1 text-brand-ivory">ROI Real</h3><p class="text-sm text-brand-muted font-light">Saiba exatamente quanto cada anúncio e cada campanha retornou em faturamento.</p></div>
+        <div class="glass rounded-2xl p-7" data-reveal style="--d:4"><i class="ph ph-funnel text-3xl grad-text"></i><h3 class="font-serif text-2xl mt-4 mb-1 text-brand-ivory">Funil Completo</h3><p class="text-sm text-brand-muted font-light">Cada etapa medida: do lead ao agendamento, do procedimento à recompra.</p></div>
+        <div class="glass rounded-2xl p-7" data-reveal style="--d:5"><i class="ph ph-receipt text-3xl grad-text"></i><h3 class="font-serif text-2xl mt-4 mb-1 text-brand-ivory">Vendas Atribuídas</h3><p class="text-sm text-brand-muted font-light">Vendas realizadas conectadas à origem certa, direto do Clinicorp.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 13 · PERSONALIZADO ============ -->
+  <section class="slide" data-section="Feito Sob Medida">
+    <div class="slide-inner grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-7">
+        <div class="flex items-center gap-4 mb-7" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-violet/70"></span><span class="kicker text-brand-ivory/60">Feito sob medida</span></div>
+        <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-8" data-reveal style="--d:1">Nada de modelo pronto. Tudo desenhado <span class="italic grad-text">para a EF Harmony.</span></h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div data-reveal style="--d:2"><div class="flex items-center gap-2 text-brand-ivory mb-1"><i class="ph ph-tag text-ai-emerald"></i><span class="font-medium">Etiquetas</span></div><p class="text-sm text-brand-muted font-light">Criadas para os seus protocolos e perfis de paciente.</p></div>
+          <div data-reveal style="--d:3"><div class="flex items-center gap-2 text-brand-ivory mb-1"><i class="ph ph-kanban text-ai-blue"></i><span class="font-medium">Painel & Funil</span></div><p class="text-sm text-brand-muted font-light">Pensados para a jornada da harmonização facial.</p></div>
+          <div data-reveal style="--d:4"><div class="flex items-center gap-2 text-brand-ivory mb-1"><i class="ph ph-chats-circle text-ai-magenta"></i><span class="font-medium">Sequências & Recompra</span></div><p class="text-sm text-brand-muted font-light">Mensagens e recompra escritas exclusivamente para você.</p></div>
+          <div data-reveal style="--d:5"><div class="flex items-center gap-2 text-brand-ivory mb-1"><i class="ph ph-magic-wand text-ai-violet"></i><span class="font-medium">Automações</span></div><p class="text-sm text-brand-muted font-light">Via IA <span class="text-brand-ivory/80">e</span> via painel — todas sob medida.</p></div>
+        </div>
+        <p class="mt-9 font-serif italic text-2xl text-brand-ivory/70" data-reveal style="--d:6">Seu CRM vai falar como a EF Harmony fala.</p>
+      </div>
+      <div class="lg:col-span-5 hidden lg:block" data-reveal style="--d:4">
+        <div class="relative glass rounded-[2rem] overflow-hidden aspect-[4/5]">
+          <img src="assets/ig/ef-acido-hialuronico.jpg" alt="Resultado real EF Harmony" class="w-full h-full object-cover">
+          <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(3,8,10,.05),rgba(3,8,10,.85));"></div>
+          <div class="absolute bottom-5 left-5 right-5"><span class="kicker text-brand-ivory/60">Resultado real · Protocolo EF Beauty</span><p class="font-serif italic text-xl text-brand-ivory mt-1">Naturalidade, equilíbrio e autoestima.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 14 · IMPLEMENTAÇÃO ============ -->
+  <section class="slide" data-section="Como Funciona">
+    <div class="slide-inner">
+      <div class="flex items-center gap-4 mb-7" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-blue/70"></span><span class="kicker text-brand-ivory/60">Como funciona</span></div>
+      <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-12 max-w-4xl" data-reveal style="--d:1">Da conversa estratégica à clínica <span class="italic grad-text">no piloto automático.</span></h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+        <div class="glass rounded-2xl p-6" data-reveal style="--d:2"><span class="num-serif text-4xl grad-text">01</span><h3 class="font-serif text-xl text-brand-ivory mt-2 mb-2">Estruturação</h3><p class="text-sm text-brand-muted font-light">Desenhamos o seu processo comercial e o funil.</p></div>
+        <div class="glass rounded-2xl p-6" data-reveal style="--d:3"><span class="num-serif text-4xl grad-text">02</span><h3 class="font-serif text-xl text-brand-ivory mt-2 mb-2">Setup Personalizado</h3><p class="text-sm text-brand-muted font-light">IA treinada no tom da EF + integração Clinicorp.</p></div>
+        <div class="glass rounded-2xl p-6" data-reveal style="--d:4"><span class="num-serif text-4xl grad-text">03</span><h3 class="font-serif text-xl text-brand-ivory mt-2 mb-2">Ativação</h3><p class="text-sm text-brand-muted font-light">Tudo no ar, acompanhado em tempo real pelo painel.</p></div>
+        <div class="glass rounded-2xl p-6" data-reveal style="--d:5"><span class="num-serif text-4xl grad-text">04</span><h3 class="font-serif text-xl text-brand-ivory mt-2 mb-2">Acompanhamento</h3><p class="text-sm text-brand-muted font-light">Ajustes e melhorias contínuas durante todo o processo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 15 · INVESTIMENTO ============ -->
+  <section class="slide" data-section="Investimento">
+    <div class="slide-inner grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-5">
+        <div class="flex items-center gap-4 mb-7" data-reveal style="--d:0"><span class="w-12 h-px bg-ai-emerald/70"></span><span class="kicker text-brand-ivory/60">Investimento</span></div>
+        <h2 class="font-serif text-editorial leading-[0.98] text-4xl md:text-6xl text-brand-ivory mb-8" data-reveal style="--d:1">Um parceiro comercial <span class="italic grad-text">completo.</span></h2>
+        <div class="glass rounded-2xl p-7" data-reveal style="--d:2">
+          <div class="flex items-end justify-between pb-5 border-b border-white/8">
+            <div><span class="kicker text-brand-ivory/50">Implementação</span><div class="num-serif text-5xl text-brand-ivory mt-1">R$ 5.899</div><span class="text-xs text-brand-muted">pagamento único</span></div>
+          </div>
+          <div class="flex items-end justify-between pt-5">
+            <div><span class="kicker text-brand-ivory/50">Mensalidade</span><div class="num-serif text-5xl grad-text mt-1">R$ 1.899</div><span class="text-xs text-brand-muted">por mês</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-7" data-reveal style="--d:3">
+        <span class="kicker text-brand-ivory/50 mb-4 block">O que está incluso</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="glass-soft rounded-xl p-4 flex items-start gap-3"><i class="ph ph-check-circle text-ai-emerald text-xl shrink-0"></i><span class="text-sm text-brand-ivory/90">Criação do processo comercial</span></div>
+          <div class="glass-soft rounded-xl p-4 flex items-start gap-3"><i class="ph ph-check-circle text-ai-emerald text-xl shrink-0"></i><span class="text-sm text-brand-ivory/90">Automatização completa do CRM</span></div>
+          <div class="glass-soft rounded-xl p-4 flex items-start gap-3"><i class="ph ph-check-circle text-ai-emerald text-xl shrink-0"></i><span class="text-sm text-brand-ivory/90">Integração com o Clinicorp</span></div>
+          <div class="glass-soft rounded-xl p-4 flex items-start gap-3"><i class="ph ph-check-circle text-ai-emerald text-xl shrink-0"></i><span class="text-sm text-brand-ivory/90">Acompanhamento dedicado</span></div>
+          <div class="glass-soft rounded-xl p-4 flex items-start gap-3"><i class="ph ph-headset text-ai-magenta text-xl shrink-0"></i><span class="text-sm text-brand-ivory/90">Grupo de suporte individualizado <span class="grad-text font-medium">· SLA de 5 minutos</span></span></div>
+          <div class="glass-soft rounded-xl p-4 flex items-start gap-3"><i class="ph ph-check-circle text-ai-emerald text-xl shrink-0"></i><span class="text-sm text-brand-ivory/90">Ajustes e melhorias durante o processo</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 16 · BÔNUS + CTA ============ -->
+  <section class="slide" data-section="Bônus & Próximo Passo">
+    <div class="slide-inner text-center flex flex-col items-center">
+      <div class="flex items-center gap-4 mb-7 justify-center" data-reveal style="--d:0"><span class="w-12 h-px bg-iridescent-flow animate-gradient-flow"></span><span class="kicker grad-text">Bônus exclusivo</span><span class="w-12 h-px bg-iridescent-flow animate-gradient-flow"></span></div>
+      <h2 class="font-serif text-editorial leading-[0.96] text-4xl md:text-6xl lg:text-7xl text-brand-ivory mb-6 max-w-4xl" data-reveal style="--d:1">Feche até <span class="grad-text">20 de junho</span> e ganhe um <span class="italic">site personalizado.</span></h2>
+      <p class="text-brand-muted font-light max-w-2xl text-lg mb-3" data-reveal style="--d:2">Um site exclusivo para a EF Harmony, por nossa conta — para transformar visitantes em pacientes.</p>
+      <div class="glass rounded-full px-6 py-2.5 mb-10 flex items-center gap-2" data-reveal style="--d:3"><i class="ph ph-timer text-ai-magenta"></i><span class="text-sm text-brand-ivory" id="countdown">Oferta válida até 20/06/2026</span></div>
+      <div data-reveal style="--d:4">
+        <div class="rounded-full p-px bg-iridescent-flow animate-gradient-flow shadow-glow-iridescent inline-block">
+          <div class="bg-brand-base/90 px-9 py-4 rounded-full flex items-center gap-3"><span class="text-sm tracking-[0.18em] font-semibold uppercase text-white">Vamos colocar a EF Harmony no piloto automático</span><i class="ph ph-arrow-right text-white"></i></div>
+        </div>
+      </div>
+      <div class="flex items-center gap-6 mt-14 opacity-90" data-reveal style="--d:5">
+        <img src="assets/logos/ef-harmony-logo.png" alt="EF Harmony" class="h-14 rounded-lg ring-1 ring-white/10">
+        <span class="font-serif italic text-2xl text-brand-ivory/40">×</span>
+        <img src="assets/logos/aios-logo.png" alt="AIOS CRM" class="h-14">
+      </div>
+      <p class="text-[11px] tracking-[0.2em] uppercase text-brand-ivory/30 mt-6" data-reveal style="--d:6">AIOS CRM · Mais que um CRM, um parceiro comercial</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  const deck = document.getElementById('deck');
+  const slides = Array.from(deck.querySelectorAll('.slide'));
+  const total = slides.length;
+  const curEl = document.getElementById('cur');
+  const progress = document.getElementById('progress');
+  const sectionLabel = document.getElementById('sectionLabel');
+  let index = 0, locked = false;
+
+  function pad(n){ return String(n+1).padStart(2,'0'); }
+  function update(i){
+    index = Math.max(0, Math.min(total-1, i));
+    slides.forEach((s,k)=> s.classList.toggle('is-active', k===index));
+    curEl.textContent = pad(index);
+    progress.style.width = ((index+1)/total*100)+'%';
+    sectionLabel.textContent = slides[index].dataset.section || '';
+  }
+  function go(i){
+    update(i);
+    slides[index].scrollIntoView({behavior:'smooth', inline:'start', block:'nearest'});
+  }
+  function next(){ if(index<total-1) go(index+1); }
+  function prev(){ if(index>0) go(index-1); }
+
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+
+  document.addEventListener('keydown', e=>{
+    if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
+    else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); prev(); }
+    else if(e.key==='Home'){ e.preventDefault(); go(0); }
+    else if(e.key==='End'){ e.preventDefault(); go(total-1); }
+  });
+
+  // sync active slide when user scrolls/swipes manually
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting && en.intersectionRatio>0.55){
+        const i = slides.indexOf(en.target);
+        if(i!==index){ update(i); }
+      }
+    });
+  }, {root:deck, threshold:[0.55,0.8]});
+  slides.forEach(s=> io.observe(s));
+
+  // wheel → horizontal slide on desktop (debounced)
+  let wheelLock=false;
+  deck.addEventListener('wheel', e=>{
+    if(window.innerWidth<768) return;
+    if(Math.abs(e.deltaY) < 12 && Math.abs(e.deltaX) < 12) return;
+    e.preventDefault();
+    if(wheelLock) return;
+    wheelLock=true;
+    const dir = (Math.abs(e.deltaY)>Math.abs(e.deltaX)? e.deltaY : e.deltaX);
+    if(dir>0) next(); else prev();
+    setTimeout(()=> wheelLock=false, 650);
+  }, {passive:false});
+
+  // countdown to 20/06/2026
+  try{
+    const deadline = new Date(2026,5,20,23,59,59);
+    const now = new Date();
+    const days = Math.ceil((deadline - now)/86400000);
+    const cd = document.getElementById('countdown');
+    if(days>1) cd.textContent = 'Faltam '+days+' dias · até 20/06/2026';
+    else if(days===1) cd.textContent = 'Último dia · 20/06/2026';
+    else if(days===0) cd.textContent = 'Hoje é o último dia!';
+  }catch(_){}
+
+  update(0);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Intelligence | Slide 01</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Outfit:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: {
+                fontFamily: { sans: ['Outfit', 'sans-serif'], serif: ['Cormorant Garamond', 'serif'] },
+                colors: {
+                    brand: { base: '#03080A', teal: '#0E4A57', darkTeal: '#052229', ivory: '#F9FAF9', muted: '#8A9D9E' },
+                    ai: { magenta: '#F92A82', blue: '#0066FF', emerald: '#00F098', violet: '#9D00FF' }
+                },
+                backgroundImage: {
+                    'iridescent-flow': 'linear-gradient(110deg, theme("colors.ai.magenta"), theme("colors.ai.violet"), theme("colors.ai.blue"), theme("colors.ai.emerald"), theme("colors.ai.magenta"))',
+                    'teal-abyss': 'radial-gradient(circle at 60% 40%, theme("colors.brand.teal") 0%, theme("colors.brand.darkTeal") 40%, theme("colors.brand.base") 100%)',
+                },
+                boxShadow: {
+                    'glass-inner': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+                    'glow-iridescent': '0 0 40px -10px rgba(0, 102, 255, 0.4), 0 0 80px -20px rgba(249, 42, 130, 0.3)',
+                }
+            } }
+        }
+    </script>
+    <style>
+        :root { --anim-curve: cubic-bezier(0.16, 1, 0.3, 1); --global-delay-multiplier: 150ms; }
+        body { background-color: #03080A; color: #F9FAF9; overflow-x: hidden; }
+        .film-grain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; opacity: 0.35; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
+        .animate-gradient-flow { background-size: 300% 300%; animation: gradient-shift 12s ease infinite; }
+        @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .ambient-orb { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.5; mix-blend-mode: screen; animation: float-orb 20s infinite ease-in-out alternate; will-change: transform; pointer-events: none; }
+        @keyframes float-orb { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-30px, 40px) scale(1.1); } 100% { transform: translate(20px, -20px) scale(0.95); } }
+        .glass-refraction { background: rgba(255, 255, 255, 0.015); backdrop-filter: blur(24px) saturate(140%); -webkit-backdrop-filter: blur(24px) saturate(140%); border-left: 1px solid rgba(255, 255, 255, 0.08); border-right: 1px solid rgba(255, 255, 255, 0.03); box-shadow: inset 1px 0 0 rgba(255,255,255,0.05); }
+        .reveal-item { opacity: 0; transform: translateY(30px); animation: reveal-up 1.2s var(--anim-curve) forwards; animation-delay: calc(var(--delay, 0) * var(--global-delay-multiplier)); }
+        @keyframes reveal-up { 0% { opacity: 0; transform: translateY(30px); filter: blur(4px); } 100% { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        .text-editorial { letter-spacing: -0.015em; }
+    </style>
+</head>
+<body class="bg-teal-abyss relative">
+    <div class="film-grain"></div>
+    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute w-[80vw] h-[80vw] bg-brand-teal/20 rounded-full blur-[150px] -top-[40vw] -left-[20vw]"></div>
+        <div class="ambient-orb w-[50vw] h-[50vw] bg-ai-blue/40 top-[10%] right-[-10vw]" style="animation-delay: -5s;"></div>
+        <div class="ambient-orb w-[40vw] h-[40vw] bg-ai-magenta/30 bottom-[-10vw] right-[10vw]" style="animation-delay: -12s;"></div>
+        <div class="ambient-orb w-[30vw] h-[30vw] bg-ai-emerald/20 top-[40%] right-[20vw]" style="animation-delay: -8s;"></div>
+    </div>
+    <main class="relative z-10 w-full min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden">
+        <div class="w-full max-w-[95%] lg:max-w-7xl mx-auto flex flex-col h-full min-h-[100dvh] relative">
+            <header class="w-full flex justify-between items-center py-8 z-20 reveal-item" style="--delay: 1">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center"><i class="ph-light ph-butterfly text-[16px] text-brand-ivory"></i></div>
+                    <span class="font-serif tracking-[0.15em] text-sm uppercase text-brand-ivory/90 font-medium">EF Harmony</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="font-sans tracking-[0.2em] text-[11px] uppercase text-brand-ivory/70 font-semibold">AIOS<span class="text-white"> CRM</span></span>
+                    <div class="flex gap-[2px]"><div class="w-[3px] h-[3px] bg-ai-emerald rounded-full"></div><div class="w-[3px] h-[3px] bg-ai-blue rounded-full"></div><div class="w-[3px] h-[3px] bg-ai-magenta rounded-full"></div></div>
+                </div>
+            </header>
+            <div class="flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center py-12 lg:py-0 relative z-10">
+                <div class="col-span-1 lg:col-span-8 flex flex-col justify-center px-4 lg:px-0 z-20">
+                    <div class="flex items-center gap-4 mb-8 reveal-item" style="--delay: 3"><span class="w-12 h-[1px] bg-ai-magenta/60"></span><span class="font-sans text-xs tracking-[0.25em] uppercase text-brand-ivory/60 font-semibold">Parceria Comercial</span></div>
+                    <h1 class="font-serif text-5xl md:text-7xl lg:text-[7.5rem] leading-[0.9] text-editorial font-medium mb-8 flex flex-col">
+                        <span class="reveal-item text-brand-ivory" style="--delay: 4">Precisão da Natureza.</span>
+                        <span class="reveal-item text-brand-ivory/40 italic pl-12 md:pl-24" style="--delay: 5">Poder da Inteligência.</span>
+                    </h1>
+                    <div class="pl-0 md:pl-24 max-w-xl reveal-item" style="--delay: 6">
+                        <p class="font-sans text-lg md:text-xl text-brand-muted font-light leading-relaxed mb-10">A integração entre estética facial de alto padrão e inteligência comercial automatizada.</p>
+                        <div class="flex items-center gap-6">
+                            <button class="relative group rounded-full p-[1px] bg-iridescent-flow animate-gradient-flow shadow-glow-iridescent"><div class="bg-brand-base px-8 py-4 rounded-full flex items-center gap-3"><span class="font-sans text-sm tracking-widest font-semibold uppercase text-white">Iniciar</span><i class="ph ph-arrow-right text-white text-lg"></i></div></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-1 lg:col-span-4 h-[40vh] lg:h-[75vh] w-full relative hidden md:block reveal-item" style="--delay: 7">
+                    <div class="w-full h-full glass-refraction rounded-[2.5rem] relative overflow-hidden flex items-center justify-center border-t border-t-white/10">
+                        <div class="relative w-[18rem] h-[18rem] rounded-full flex items-center justify-center animate-[spin_40s_linear_infinite]">
+                            <div class="absolute inset-4 rounded-full bg-iridescent-flow animate-gradient-flow opacity-30 blur-[20px]"></div>
+                            <div class="w-3/4 h-3/4 rounded-full bg-brand-base flex items-center justify-center relative z-10 shadow-[inset_0px_10px_30px_rgba(0,0,0,0.8)] border border-white/5">
+                                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-brand-teal to-brand-darkTeal flex items-center justify-center opacity-80"><div class="w-1 h-1 rounded-full bg-white animate-pulse"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="w-full flex justify-between items-end pb-8 pt-4 border-t border-white/5 mt-auto z-20"><span class="font-sans text-xs text-brand-ivory/40">AIOS CRM × EF Harmony</span><div class="font-serif text-2xl text-brand-ivory font-light italic">01 <span class="text-brand-ivory/30 text-lg font-sans not-italic">/ 16</span></div></footer>
+        </div>
+    </main>
+</body>
+</html>
