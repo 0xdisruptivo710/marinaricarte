@@ -492,9 +492,9 @@ tailwind.config = {
   <section class="slide" data-section="Bônus & Próximo Passo">
     <div class="slide-inner text-center flex flex-col items-center">
       <div class="flex items-center gap-4 mb-7 justify-center" data-reveal style="--d:0"><span class="w-12 h-px bg-iridescent-flow animate-gradient-flow"></span><span class="kicker grad-text">Bônus exclusivo</span><span class="w-12 h-px bg-iridescent-flow animate-gradient-flow"></span></div>
-      <h2 class="font-serif text-editorial leading-[0.96] text-4xl md:text-6xl lg:text-7xl text-brand-ivory mb-6 max-w-4xl" data-reveal style="--d:1">Feche até <span class="grad-text">20 de junho</span> e ganhe um <span class="italic">site personalizado.</span></h2>
+      <h2 class="font-serif text-editorial leading-[0.96] text-4xl md:text-6xl lg:text-7xl text-brand-ivory mb-6 max-w-4xl" data-reveal style="--d:1">Feche até <span class="grad-text">30 de junho</span> e ganhe um <span class="italic">site personalizado.</span></h2>
       <p class="text-brand-muted font-light max-w-2xl text-lg mb-3" data-reveal style="--d:2">Um site exclusivo para a Marina Ricarte, por nossa conta — para transformar visitantes em pacientes.</p>
-      <div class="glass rounded-full px-6 py-2.5 mb-10 flex items-center gap-2" data-reveal style="--d:3"><i class="ph ph-timer text-ai-magenta"></i><span class="text-sm text-brand-ivory" id="countdown">Oferta válida até 20/06/2026</span></div>
+      <div class="glass rounded-full px-6 py-2.5 mb-10 flex items-center gap-2" data-reveal style="--d:3"><i class="ph ph-timer text-ai-magenta"></i><span class="text-sm text-brand-ivory" id="countdown">Oferta válida até 30/06/2026</span></div>
       <div data-reveal style="--d:4">
         <div class="rounded-full p-px bg-iridescent-flow animate-gradient-flow shadow-glow-iridescent inline-block">
           <div class="bg-brand-base/90 px-9 py-4 rounded-full flex items-center gap-3"><span class="text-sm tracking-[0.18em] font-semibold uppercase text-white">Vamos colocar a Marina Ricarte no piloto automático</span><i class="ph ph-arrow-right text-white"></i></div>
@@ -570,14 +570,14 @@ tailwind.config = {
     setTimeout(()=> wheelLock=false, 650);
   }, {passive:false});
 
-  // countdown to 20/06/2026
+  // countdown to 30/06/2026
   try{
-    const deadline = new Date(2026,5,20,23,59,59);
+    const deadline = new Date(2026,5,30,23,59,59);
     const now = new Date();
     const days = Math.ceil((deadline - now)/86400000);
     const cd = document.getElementById('countdown');
-    if(days>1) cd.textContent = 'Faltam '+days+' dias · até 20/06/2026';
-    else if(days===1) cd.textContent = 'Último dia · 20/06/2026';
+    if(days>1) cd.textContent = 'Faltam '+days+' dias · até 30/06/2026';
+    else if(days===1) cd.textContent = 'Último dia · 30/06/2026';
     else if(days===0) cd.textContent = 'Hoje é o último dia!';
   }catch(_){}
 
